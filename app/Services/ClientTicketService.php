@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\MShopBasket;
+use App\Models\Model;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -80,7 +80,7 @@ class ClientTicketService
 
         $this->checkClient();
 
-            $card = new MShopBasket;
+            $card = new Model;
             $card->user_id = $this->userId ?? null;
             $card->client_ticket = $this->clientTicket ?? null;
             $card->detail = $order ?? null;
@@ -96,9 +96,9 @@ class ClientTicketService
         $this->checkClient();
 
         if ($this->userId)
-            $card = MShopBasket::where('user_id' ,  $this->userId)->orderby('id', 'desc')->first();
+            $card = Model::where('user_id' ,  $this->userId)->orderby('id', 'desc')->first();
         else
-            $card = MShopBasket::where('client_ticket' , $this->clientTicket)->orderby('id', 'desc')->first();
+            $card = Model::where('client_ticket' , $this->clientTicket)->orderby('id', 'desc')->first();
 
         $cardDetail = $card->detail ?? null;
         return $cardDetail;
@@ -108,7 +108,7 @@ class ClientTicketService
     public function updateBasketAfterAuth($key = null)
     {
         if ($this->userId && $this->clientTicket){
-            $card = MShopBasket::where('client_ticket' , $this->clientTicket)->orderby('id', 'desc')->first();
+            $card = Model::where('client_ticket' , $this->clientTicket)->orderby('id', 'desc')->first();
             if ($card)
                 $card->update([
                         'user_id' => $this->userId,
@@ -123,13 +123,13 @@ class ClientTicketService
     public function deleteBasket($key = null)
     {
         if ($this->clientTicket){
-            $cards = MShopBasket::where('client_ticket' , $this->clientTicket)->all();
+            $cards = Model::where('client_ticket' , $this->clientTicket)->all();
             if ($cards)
                 foreach ($cards as $cardKey => $card)
                     $card->delete();
         }
         if ($this->userId){
-            $cards = MShopBasket::where('user_id' , $this->userId)->all();
+            $cards = Model::where('user_id' , $this->userId)->all();
             if ($cards)
                 foreach ($cards as $cardKey => $card)
                     $card->delete();
