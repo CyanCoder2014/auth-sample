@@ -11,13 +11,13 @@ class AgendaController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+//        $this->middleware('api:auth');
     }
 
 
     public function index()
     {
-        return Agenda::pginate(20);
+        return Agenda::paginate(20);
     }
 
     public function show($id)
